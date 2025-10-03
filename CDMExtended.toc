@@ -1,1 +1,10 @@
-CDMExtended.lua
+## Author: Daladirn
+
+# Pre-core modules
+Utils\PrototypeRegistry.lua
+Utils\IconStylizer.lua
+Utils\CooldownStylizer.lua
+Utils\StacksStylizer.lua
+
+# Core modules
+CDMX_Core.lua
