@@ -10,7 +10,7 @@ function CooldownStylizer:UpdateMask(frame)
     cooldown:ClearAllPoints()
     cooldown:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
     cooldown:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
-    cooldown:SetSwipeTexture(CDMX.Borders[CDMX.Options.Border].MaskTexture)
+    cooldown:SetSwipeTexture(CDMX.Styles[CDMX.Options.Style].MaskTexture)
 end
 
 function CooldownStylizer:UpdateCooldownFlash(frame)
@@ -19,6 +19,6 @@ function CooldownStylizer:UpdateCooldownFlash(frame)
     if not cooldownFlash or not icon then return end
 
     cooldownFlash:ClearAllPoints()
-    cooldownFlash:SetPoint("TOPLEFT", frame, "TOPLEFT", -CDMX.Borders[CDMX.Options.Border].IconScale * frame:GetWidth(), CDMX.Borders[CDMX.Options.Border].IconScale * frame:GetHeight())
-    cooldownFlash:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", CDMX.Borders[CDMX.Options.Border].IconScale * frame:GetWidth(), -CDMX.Borders[CDMX.Options.Border].IconScale * frame:GetHeight())
+    cooldownFlash:SetPoint("TOPLEFT", frame, "TOPLEFT", -CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetWidth(), CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetHeight())
+    cooldownFlash:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetWidth(), -CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetHeight())
 end

@@ -34,31 +34,38 @@ function IconStylizer:RemoveBorder(frame)
     end
 end
 
+function IconStylizer:AddBorder(frame)
+    local icon = frame.Icon
+    if not icon then return end
+
+    local border = CreateFrame("Frame", nil, frame, BackdropTemplateMixin and "BackdropTemplate")
+    border:SetPoint("TOPLEFT", frame, -CDMX.Options.Border.Size, CDMX.Options.Border.Size)
+    border:SetPoint("BOTTOMRIGHT", frame, CDMX.Options.Border.Size, -CDMX.Options.Border.Size)
+
+    border:SetBackdrop({
+        edgeFile = CDMX.Styles[CDMX.Options.Style].MaskTexture, -- or your own border texture
+        edgeSize = CDMX.Options.Border.Size,
+    })
+    border:SetBackdropBorderColor(CDMX.Options.Border.ColorR, CDMX.Options.Border.ColorG, CDMX.Options.Border.ColorB, CDMX.Options.Border.ColorA)
+
+    local parentStrata = frame:GetFrameStrata() or "LOW"
+    local parentLevel = frame:GetFrameLevel() or 1
+    border:SetFrameStrata(parentStrata)
+    border:SetFrameLevel(math.max(0, parentLevel - 1))
+
+    icon.Border = border
+end
+
 function IconStylizer:UpdateMask(frame)
     local icon = frame.Icon
     if not icon then return end
 
     local mask = frame:CreateMaskTexture()
-    mask:SetTexture(CDMX.Borders[CDMX.Options.Border].MaskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetTexture(CDMX.Styles[CDMX.Options.Style].MaskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
     mask:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
 
     icon:AddMaskTexture(mask)
-end
-
-function IconStylizer:AddBorder(frame)
-    local icon = frame.Icon
-    if not icon then return end
-
-    icon.Border = CreateFrame("Frame", nil, frame, BackdropTemplateMixin and "BackdropTemplate")
-    icon.Border:SetPoint("TOPLEFT", frame, -1, 1)
-    icon.Border:SetPoint("BOTTOMRIGHT", frame, 1, -1)
-
-    icon.Border:SetBackdrop({
-        edgeFile = CDMX.Borders[CDMX.Options.Border].MaskTexture, -- or your own border texture
-        edgeSize = 1,
-    })
-    icon.Border:SetBackdropBorderColor(0, 0, 0, 1)
 end
 
 function IconStylizer:ScaleIconTexture(frame)
@@ -66,6 +73,6 @@ function IconStylizer:ScaleIconTexture(frame)
     if not icon then return end
 
     icon:ClearAllPoints()
-    icon:SetPoint("TOPLEFT", frame, "TOPLEFT", -CDMX.Borders[CDMX.Options.Border].IconScale * frame:GetWidth(), CDMX.Borders[CDMX.Options.Border].IconScale * frame:GetHeight())
-    icon:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", CDMX.Borders[CDMX.Options.Border].IconScale * frame:GetWidth(), -CDMX.Borders[CDMX.Options.Border].IconScale * frame:GetHeight())
+    icon:SetPoint("TOPLEFT", frame, "TOPLEFT", -CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetWidth(), CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetHeight())
+    icon:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetWidth(), -CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetHeight())
 end

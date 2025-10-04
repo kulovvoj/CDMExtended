@@ -6,17 +6,25 @@ local CooldownStylizer = private:GetPrototype("CooldownStylizer")
 local StacksStylizer = private:GetPrototype("StacksStylizer")
 
 CDMX.DefaultOptions = {
-    Border = "Clean",
+    Style = "Clean",
+    Border = {
+        Size = 1,
+        ColorR = 0,
+        ColorG = 0,
+        ColorB = 0,
+        ColorA = 1
+    },
     Stacks = {
         Anchor = "TOP",
         XOffset = 0,
         YOffset = 9,
         Font = "Fonts\\FRIZQT__.TTF",
         FontSize = 18
-    }
+    },
+    Padding = 1
 }
 CDMX.CdmFrames = {"EssentialCooldownViewer", "BuffIconCooldownViewer", "UtilityCooldownViewer"}
-CDMX.Borders = {
+CDMX.Styles = {
     Clean = {
         IconScale = .09,
         MaskTexture = "Interface\\AddOns\\CDMExtended\\Media\\SquareMask"
@@ -75,9 +83,7 @@ function StylizeAllCDMIcons()
         local frame = _G[frameName]
         if frame then
             if frame.RefreshLayout then
-                frame.iconPadding = 1
-                frame.iconScale = 1
-                frame.iconDirection = 2
+                frame.iconPadding = CDMX.Options.Padding
             end
 
             for _, child in ipairs({frame:GetChildren()}) do
