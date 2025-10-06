@@ -1,7 +1,7 @@
 local private = select(2, ...)
 local IconStylizer = private:GetPrototype("IconStylizer")
 
-local CDMX = private:GetPrototype("CDMX")
+local Constants = private:GetPrototype("Constants")
 
 
 function IconStylizer:RemoveOverlay(frame)
@@ -39,14 +39,14 @@ function IconStylizer:AddBorder(frame)
     if not icon then return end
 
     local border = CreateFrame("Frame", nil, frame, BackdropTemplateMixin and "BackdropTemplate")
-    border:SetPoint("TOPLEFT", frame, -CDMX.Options.Border.Size, CDMX.Options.Border.Size)
-    border:SetPoint("BOTTOMRIGHT", frame, CDMX.Options.Border.Size, -CDMX.Options.Border.Size)
+    border:SetPoint("TOPLEFT", frame, -CdmxDB.BorderSize, CdmxDB.BorderSize)
+    border:SetPoint("BOTTOMRIGHT", frame, CdmxDB.BorderSize, -CdmxDB.BorderSize)
 
     border:SetBackdrop({
-        edgeFile = CDMX.Styles[CDMX.Options.Style].MaskTexture, -- or your own border texture
-        edgeSize = CDMX.Options.Border.Size,
+        edgeFile = Constants.Styles[CdmxDB.Style].MaskTexture, -- or your own border texture
+        edgeSize = CdmxDB.BorderSize,
     })
-    border:SetBackdropBorderColor(CDMX.Options.Border.ColorR, CDMX.Options.Border.ColorG, CDMX.Options.Border.ColorB, CDMX.Options.Border.ColorA)
+    border:SetBackdropBorderColor(CdmxDB.BorderColor.r, CdmxDB.BorderColor.g, CdmxDB.BorderColor.b, CdmxDB.BorderColor.a)
 
     local parentStrata = frame:GetFrameStrata() or "LOW"
     local parentLevel = frame:GetFrameLevel() or 1
@@ -61,7 +61,7 @@ function IconStylizer:UpdateMask(frame)
     if not icon then return end
 
     local mask = frame:CreateMaskTexture()
-    mask:SetTexture(CDMX.Styles[CDMX.Options.Style].MaskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetTexture(Constants.Styles[CdmxDB.Style].MaskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
     mask:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
 
@@ -73,6 +73,8 @@ function IconStylizer:ScaleIconTexture(frame)
     if not icon then return end
 
     icon:ClearAllPoints()
-    icon:SetPoint("TOPLEFT", frame, "TOPLEFT", -CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetWidth(), CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetHeight())
-    icon:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetWidth(), -CDMX.Styles[CDMX.Options.Style].IconScale * frame:GetHeight())
+    icon:SetPoint("TOPLEFT", frame, "TOPLEFT", -Constants.Styles[CdmxDB.Style].IconScale * frame:GetWidth(), Constants.Styles[CdmxDB.Style].IconScale * frame:GetHeight())
+    icon:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", Constants.Styles[CdmxDB.Style].IconScale * frame:GetWidth(), -Constants.Styles[CdmxDB.Style].IconScale * frame:GetHeight())
 end
+
+

@@ -1,8 +1,6 @@
 local private = select(2, ...)
 local StacksStylizer = private:GetPrototype("StacksStylizer")
 
-local CDMX = private:GetPrototype("CDMX")
-
 function StacksStylizer:UpdateFont(frame)
     local stacks = frame.Applications or frame.ChargeCount
     if not stacks then return end
@@ -10,7 +8,12 @@ function StacksStylizer:UpdateFont(frame)
     if not current then return end
 
     local _, _, fontFlags = current:GetFont()
-    current:SetFont(CDMX.Options.Stacks.Font, CDMX.Options.Stacks.FontSize, fontFlags)
+    local success = current:SetFont(CdmxDB.Font, CdmxDB.StacksFontSize, fontFlags)
+    if not success then
+        C_Timer.After(0.5, function()
+            StacksStylizer:UpdateFont(frame)
+        end)
+    end
 end
 
 function StacksStylizer:UpdatePosition(frame)
@@ -20,5 +23,5 @@ function StacksStylizer:UpdatePosition(frame)
     if not current then return end
 
     current:ClearAllPoints()
-    current:SetPoint(CDMX.Options.Stacks.Anchor, frame, CDMX.Options.Stacks.Anchor, CDMX.Options.Stacks.XOffset, CDMX.Options.Stacks.YOffset)
+    current:SetPoint("CENTER", frame, CdmxDB.StacksAnchor, CdmxDB.StacksXOffset, CdmxDB.StacksYOffset)
 end
