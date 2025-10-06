@@ -188,11 +188,11 @@ function UserInterfaceMixins.SettingMixin:CreateCheckboxFrame(id)
         if self.parent:GetSettingValue(id) == value then return end
         self.parent:SetSettingValue(id, value)
     end)
-
+    self.Checkbox:SetScript("OnEnter", function() end)
+    self.Checkbox:SetScript("OnLeave", function() end)
     return self.Checkbox
 end
 
--- Function to open the color picker
 local function OpenColorPicker(color, colorChangedCallback, cancelCallback)
     local options = {
         swatchFunc = colorChangedCallback,
