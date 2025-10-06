@@ -1,7 +1,7 @@
 ## Title: CDM Extended
 ## Author: Daladirn
 ## SavedVariables: CdmxDB
-## OptionalDeps: LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
+## OptionalDeps: LibSharedMedia-3.0
 
 # Pre-core modules
 Utils\PrototypeRegistry.lua
