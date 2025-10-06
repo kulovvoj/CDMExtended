@@ -4,7 +4,6 @@ local SafetyUtils = private:GetPrototype("SafetyUtils")
 local Constants = private:GetPrototype("Constants")
 local CdmxDB = private:GetPrototype("CdmxDB.Style")
 
-
 function SafetyUtils:IsForbidden(o)
     return type(o) == "table" and o.IsForbidden and o:IsForbidden()
 end
@@ -38,4 +37,41 @@ function SafetyUtils:EnsureMask(parent, key)
         mask:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", 0, 0)
     end
     return mask
+end
+
+function SafetyUtils:GetSharedMedia()
+    if not LibStub or not LibStub("LibSharedMedia-3.0", true) then
+        return SafetyUtils.MediaHandler
+    end
+
+    return LibStub("LibSharedMedia-3.0")
+end
+
+SafetyUtils.MediaHandler = {}
+SafetyUtils.MediaHandler.Fonts = {
+    { fontName = "Friz Quadrata TT", fontPath = "Fonts\\FRIZQT__.TTF" },
+    { fontName = "Skurri", fontPath = "Fonts\\SKURRI.TTF" },
+    { fontName = "Morpheus", fontPath = "Fonts\\MORPHEUS.TTF" },
+    { fontName = "Arial Narrow", fontPath = "Fonts\\ARIALN.TTF" },
+}
+
+function SafetyUtils.MediaHandler:List(type)
+    if type == "font" then
+        fontList = {}
+        for _, fontData in ipairs(self.Fonts) do
+            table.insert(fontList, fontData.fontName)
+        end
+
+        return fontList
+    end
+end
+
+function SafetyUtils.MediaHandler:Fetch(type, name)
+    if type == "font" then
+        for _, fontData in ipairs(self.Fonts) do
+            if (fontData.fontName == name) then
+                return fontData.fontPath
+            end
+        end
+    end
 end

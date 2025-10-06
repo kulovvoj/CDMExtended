@@ -4,7 +4,9 @@ local Constants = private:GetPrototype("Constants")
 local IconStylizer = private:GetPrototype("IconStylizer")
 local CooldownStylizer = private:GetPrototype("CooldownStylizer")
 local StacksStylizer = private:GetPrototype("StacksStylizer")
-local SharedMedia = LibStub("LibSharedMedia-3.0")
+local SafetyUtils = private:GetPrototype("SafetyUtils")
+
+local SharedMedia = SafetyUtils:GetSharedMedia()
 
 function Constants:Initialize()
     local sharedMediaFonts = SharedMedia:List("font")

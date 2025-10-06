@@ -5,12 +5,12 @@
 
 # Pre-core modules
 Utils\PrototypeRegistry.lua
+Utils\SafetyUtils.lua
 Utils\IconStylizer.lua
 Utils\CooldownStylizer.lua
 Utils\StacksStylizer.lua
 Utils\CommandHandler.lua
 Utils\FontInitializer.lua
-Utils\SafetyUtils.lua
 Constants\Constants.lua
 
 # User interface modules

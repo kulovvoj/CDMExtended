@@ -1,7 +1,9 @@
 local private = select(2, ...)
 local FontInitializer = private:GetPrototype("FontInitializer")
 
-local SharedMedia = LibStub("LibSharedMedia-3.0")
+local SafetyUtils = private:GetPrototype("SafetyUtils")
+
+local SharedMedia = SafetyUtils:GetSharedMedia()
 
 function FontInitializer:Initialize()
     local sharedMediaFonts = SharedMedia:List("font")
