@@ -1,26 +1,26 @@
 local private = select(2, ...)
 local StacksStylizer = private:GetPrototype("StacksStylizer")
 
-function StacksStylizer:UpdateFont(frame)
+local SafetyUtils = private:GetPrototype("SafetyUtils")
+
+function StacksStylizer.UpdateFont(frame)
+    if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
     local stacks = frame.Applications or frame.ChargeCount
-    if not stacks then return end
+    if type(stacks) ~= "table" then return end
     local current = stacks.Applications or stacks.Current
-    if not current then return end
+    if type(current) ~= "table" then return end
 
     local _, _, fontFlags = current:GetFont()
-    local success = current:SetFont(CdmxDB.Font, CdmxDB.StacksFontSize, fontFlags)
-    if not success then
-        C_Timer.After(0.5, function()
-            StacksStylizer:UpdateFont(frame)
-        end)
-    end
+    current:SetFont(CdmxDB.Font, CdmxDB.StacksFontSize, fontFlags)
+    stacks:SetFrameLevel(math.max(stacks:GetFrameLevel() or 1, (frame:GetFrameLevel() or 1) + 1))
 end
 
-function StacksStylizer:UpdatePosition(frame)
+function StacksStylizer.UpdatePosition(frame)
+    if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
     local stacks = frame.Applications or frame.ChargeCount
-    if not stacks then return end
+    if type(stacks) ~= "table" then return end
     local current = stacks.Applications or stacks.Current
-    if not current then return end
+    if type(current) ~= "table" then return end
 
     current:ClearAllPoints()
     current:SetPoint("CENTER", frame, CdmxDB.StacksAnchor, CdmxDB.StacksXOffset, CdmxDB.StacksYOffset)

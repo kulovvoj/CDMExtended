@@ -1,36 +1,48 @@
 local private = select(2, ...)
 local CooldownStylizer = private:GetPrototype("CooldownStylizer")
-local Constants = private:GetPrototype("Constants")
 
-function CooldownStylizer:UpdateMask(frame)
+local Constants = private:GetPrototype("Constants")
+local SafetyUtils = private:GetPrototype("SafetyUtils")
+
+function CooldownStylizer.UpdateMask(frame)
+    if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
     local cooldown = frame.Cooldown
-    if not cooldown then return end
+    if type(cooldown) ~= "table" then return end
 
     cooldown:ClearAllPoints()
     cooldown:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
     cooldown:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
-    cooldown:SetSwipeTexture(Constants.Styles[CdmxDB.Style].MaskTexture)
+
+    if cooldown.SetSwipeTexture then
+        cooldown:SetSwipeTexture(Constants.Styles[CdmxDB.Style].MaskTexture)
+    end
 end
 
-function CooldownStylizer:UpdateFont(frame)
+function CooldownStylizer.UpdateFont(frame)
+    if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
     local cooldown = frame.Cooldown
-    if not cooldown then return end
-    local regions = cooldown:GetRegions()
+    if type(cooldown) ~= "table" then return end
 
+    local regions = cooldown:GetRegions()
     for _, region in pairs({ regions }) do
-        if region.GetFont and region.SetFont then
+        if type(region) == "table" and not SafetyUtils:IsForbidden(frame) and region.GetFont and region.SetFont then
             local _, _, fontFlags = region:GetFont()
             region:SetFont(CdmxDB.Font, CdmxDB.CooldownFontSize, fontFlags)
         end
     end
 end
 
-function CooldownStylizer:UpdateCooldownFlash(frame)
+function CooldownStylizer.UpdateCooldownFlash(frame)
+    if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
     local cooldownFlash = frame.CooldownFlash
     local icon = frame.Icon
-    if not cooldownFlash or not icon then return end
+    if type(cooldownFlash) ~= "table" or type(icon) ~= "table" then return end
+
+    local width = SafetyUtils:SafeCall(frame, "GetWidth") or 0
+    local height = SafetyUtils:SafeCall(frame, "GetHeight") or 0
+    local xOffset, yOffset = Constants.Styles[CdmxDB.Style].IconScale * width, Constants.Styles[CdmxDB.Style].IconScale * height
 
     cooldownFlash:ClearAllPoints()
-    cooldownFlash:SetPoint("TOPLEFT", frame, "TOPLEFT", -Constants.Styles[CdmxDB.Style].IconScale * frame:GetWidth(), Constants.Styles[CdmxDB.Style].IconScale * frame:GetHeight())
-    cooldownFlash:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", Constants.Styles[CdmxDB.Style].IconScale * frame:GetWidth(), -Constants.Styles[CdmxDB.Style].IconScale * frame:GetHeight())
+    cooldownFlash:SetPoint("TOPLEFT",     frame, "TOPLEFT",     -xOffset,  yOffset)
+    cooldownFlash:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT",  xOffset, -yOffset)
 end

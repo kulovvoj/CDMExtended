@@ -25,12 +25,15 @@ function UserInterfaceMixins.OptionsMixin:OnLoad()
     self.CloseButton = CreateFrame("Button", nil, self, "UIPanelCloseButton")
     self.CloseButton:SetPoint("TOPRIGHT", self, "TOPRIGHT")
     self.CloseButton:SetFrameStrata("DIALOG")
+    self.CloseButton.OnClick = function (self)
+        self:Hide()
+    end
 end
 
 function UserInterfaceMixins.OptionsMixin:SetTitle(title)
     self.Title = self:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
     self.Title:SetPoint("TOP", self, "TOP", 0, -15)
-    self.Title:SetText("CDM Extended")
+    self.Title:SetText(title)
 
     return self.Title
 end
@@ -138,10 +141,11 @@ function UserInterfaceMixins.SettingMixin:CreateDropdownFrame(id, options, width
     end
 
     local function SetSelected(value)
+        if self.parent:GetSettingValue(id) == value then return end
         self.parent:SetSettingValue(id, value)
     end
 
-    self.Dropdown:SetupMenu(function(self, rootDescription)
+    self.Dropdown:SetupMenu(function(_, rootDescription)
         for _, option in ipairs(options) do
             rootDescription:CreateRadio(option.text, IsSelected, SetSelected, option.value);
         end
@@ -159,12 +163,16 @@ function UserInterfaceMixins.SettingMixin:CreateSliderFrame(id, minValue, maxVal
     if isPercent then
         self.Slider:Init(self.parent:GetSettingValue(id), minValue, maxValue, steps, {[MinimalSliderWithSteppersMixin.Label.Right] = CreateMinimalSliderFormatter(MinimalSliderWithSteppersMixin.Label.Right, UserInterfaceUtils.FormatPercentage)})
         self.Slider:RegisterCallback(MinimalSliderWithSteppersMixin.Event.OnValueChanged, function(_, value)
-            self.parent:SetSettingValue(id, Round(value * 100) / 100)
+            local roundedValue = Round(value * 100) / 100
+            if self.parent:GetSettingValue(id) == roundedValue then return end
+            self.parent:SetSettingValue(id, roundedValue)
         end, slider)
     else
         self.Slider:Init(self.parent:GetSettingValue(id), minValue, maxValue, steps, {[MinimalSliderWithSteppersMixin.Label.Right] = CreateMinimalSliderFormatter(MinimalSliderWithSteppersMixin.Label.Right, UserInterfaceUtils.FormatNumber)})
         self.Slider:RegisterCallback(MinimalSliderWithSteppersMixin.Event.OnValueChanged, function(_, value)
-            self.parent:SetSettingValue(id, Round(value))
+            local roundedValue = Round(value)
+            if self.parent:GetSettingValue(id) == roundedValue then return end
+            self.parent:SetSettingValue(id, roundedValue)
         end, slider)
     end
 
@@ -177,6 +185,7 @@ function UserInterfaceMixins.SettingMixin:CreateCheckboxFrame(id)
     self.Checkbox:Init(self.parent:GetSettingValue(id))
 
     self.Checkbox:RegisterCallback("OnValueChanged", function(_, value)
+        if self.parent:GetSettingValue(id) == value then return end
         self.parent:SetSettingValue(id, value)
     end)
 
@@ -220,6 +229,10 @@ function UserInterfaceMixins.SettingMixin:CreateColorPickerFrame(id)
         local newA = ColorPickerFrame:GetColorAlpha()
         local color = { r = newR, g = newG, b = newB, a = newA }
 
+        local oldColor = self.parent:GetSettingValue(id)
+        if oldColor.r == color.r and oldColor.g == color.g and oldColor.b == color.b and oldColor.a == color.a then
+            return
+        end
         self.parent:SetSettingValue(id, color)
         self.ColorPicker:SetBackdropColor(color.r, color.g, color.b, color.a)
     end

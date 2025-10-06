@@ -7,6 +7,7 @@ local StacksStylizer = private:GetPrototype("StacksStylizer")
 local Constants = private:GetPrototype("Constants")
 local UserInterfaceMixins = private:GetPrototype("UserInterfaceMixins")
 local FontInitializer = private:GetPrototype("FontInitializer")
+local SafetyUtils = private:GetPrototype("SafetyUtils")
 
 CDMX.EventListener, CDMX.Events = CreateFrame("FRAME", "CDMX_EventListener"), {}
 
@@ -22,25 +23,32 @@ end
 function isCdmParent(frame)
     local parent = frame:GetParent()
     local name = frame:GetName()
-    while parent and not isStringInTable(name, Constants.CdmFrames) do
+    while parent and not isStringInTable(name, Constants.CdmFramesEnum) do
         parent = parent:GetParent()
         if parent then name = parent:GetName() end
     end
-    return isStringInTable(name, Constants.CdmFrames)
+    return isStringInTable(name, Constants.CdmFramesEnum)
 end
 
 -- Scales the glow to fit within the frame
 hooksecurefunc(ActionButtonSpellAlertMixin, 'OnLoad', function(self)
     hooksecurefunc(self, 'SetSize', function(self)
         if not isCdmParent(self) then return end
-        if isStringInTable(name, Constants.CdmFrames) then
-            self:SetScale(0.95)
-        end
+        self:SetScale(0.95)
     end)
 end)
 
-hooksecurefunc(UserInterfaceMixins.SettingsFrameMixin, 'SetSettingValue', function(self, id)
-    StylizeAllCDMIcons()
+hooksecurefunc(UserInterfaceMixins.SettingsFrameMixin, 'SetSettingValue', function(_, id)
+    for _, setting in ipairs(Constants.Settings) do
+        if setting.id == id and setting.stylizers then
+            StylizeFrameCooldowns(Constants.CdmFramesEnum.ESSENTIAL_COOLDOWN_VIEWER, setting.stylizers)
+            StylizeFrameCooldowns(Constants.CdmFramesEnum.BUFF_ICON_COOLDOWN_VIEWER, setting.stylizers)
+            StylizeFrameCooldowns(Constants.CdmFramesEnum.UTILITY_COOLDOWN_VIEWER, setting.stylizers)
+        end
+    end
+    AdjustFramePadding(Constants.CdmFramesEnum.ESSENTIAL_COOLDOWN_VIEWER)
+    AdjustFramePadding(Constants.CdmFramesEnum.BUFF_ICON_COOLDOWN_VIEWER)
+    AdjustFramePadding(Constants.CdmFramesEnum.UTILITY_COOLDOWN_VIEWER)
 end)
 
 local function CopyDefaultsToDB(src, dest)
@@ -63,40 +71,52 @@ function OnPlayerLogin()
     Constants:Initialize()
     CopyDefaultsToDB(Constants.DefaultOptions, CdmxDB)
     FontInitializer:Initialize()
-    StylizeAllCDMIcons(true)
+    local functions = {
+        IconStylizer.RemoveOverlay,
+        IconStylizer.UpdateMask,
+        IconStylizer.ScaleIconTexture,
+        CooldownStylizer.UpdateMask,
+        CooldownStylizer.UpdateCooldownFlash,
+        IconStylizer.RemoveBorder,
+        IconStylizer.AddBorder,
+        StacksStylizer.UpdatePosition,
+        StacksStylizer.UpdateFont,
+        CooldownStylizer.UpdateFont
+    }
+    StylizeFrameCooldowns(Constants.CdmFramesEnum.ESSENTIAL_COOLDOWN_VIEWER, functions)
+    StylizeFrameCooldowns(Constants.CdmFramesEnum.BUFF_ICON_COOLDOWN_VIEWER, functions)
+    StylizeFrameCooldowns(Constants.CdmFramesEnum.UTILITY_COOLDOWN_VIEWER, functions)
+    AdjustFramePadding(Constants.CdmFramesEnum.ESSENTIAL_COOLDOWN_VIEWER)
+    AdjustFramePadding(Constants.CdmFramesEnum.BUFF_ICON_COOLDOWN_VIEWER)
+    AdjustFramePadding(Constants.CdmFramesEnum.UTILITY_COOLDOWN_VIEWER)
 end
 
-function StylizeCDMIcon(frame, isInit)
-    if isInit then
-        IconStylizer:RemoveOverlay(frame)
-        IconStylizer:UpdateMask(frame)
-        IconStylizer:ScaleIconTexture(frame)
-        CooldownStylizer:UpdateMask(frame)
-        CooldownStylizer:UpdateCooldownFlash(frame)
-    end
-    IconStylizer:RemoveBorder(frame)
-    if CdmxDB.BorderShown then
-        IconStylizer:AddBorder(frame)
-    end
-    StacksStylizer:UpdatePosition(frame)
-    StacksStylizer:UpdateFont(frame)
-    CooldownStylizer:UpdateFont(frame)
-end
-
-function StylizeAllCDMIcons(isInit)
-    for _, frameName in pairs(Constants.CdmFrames) do
-        local frame = _G[frameName]
-        if frame then
-            if frame.RefreshLayout then
-                frame.iconPadding = CdmxDB.Padding
-            end
-
-            for _, child in ipairs({frame:GetChildren()}) do
-                StylizeCDMIcon(child, isInit)
-            end
-            frame:RefreshLayout()
+function StylizeCooldown(frame, functions)
+    for _, func in ipairs(functions) do
+        if type(func) == "function" then
+            func(frame)
         end
     end
+end
+
+function StylizeFrameCooldowns(frameName, functions)
+    local frame = rawget(_G, frameName)
+    if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
+
+    for _, child in ipairs({frame:GetChildren()}) do
+        if type(child) == "table" and not SafetyUtils:IsForbidden(child) then
+            StylizeCooldown(child, functions)
+        end
+    end
+end
+
+function AdjustFramePadding(frameName)
+    local frame = rawget(_G, frameName)
+    if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
+
+    frame.childXPadding = CdmxDB.IconXPadding
+    frame.childYPadding = CdmxDB.IconYPadding
+    frame:Layout()
 end
 
 -- Define event handlers here
