@@ -5,7 +5,6 @@ local Constants = private:GetPrototype("Constants")
 local SafetyUtils = private:GetPrototype("SafetyUtils")
 
 function IconStylizer.RemoveOverlay(frame)
-    print("RemoveOverlay", frame)
     if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
     local icon = frame.Icon
     if type(icon) ~= "table" then return end
