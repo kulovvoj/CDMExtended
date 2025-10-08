@@ -125,6 +125,11 @@ function Constants:Initialize()
     }
 end
 
+Constants.CdmFramesEnum = {
+    ESSENTIAL_COOLDOWN_VIEWER = "EssentialCooldownViewer",
+    BUFF_ICON_COOLDOWN_VIEWER = "BuffIconCooldownViewer",
+    UTILITY_COOLDOWN_VIEWER = "UtilityCooldownViewer"
+}
 
 Constants.SettingTypesEnum = {
     DROPDOWN = "dropdown",
@@ -134,31 +139,66 @@ Constants.SettingTypesEnum = {
 }
 
 Constants.DefaultOptions = {
-    Style = "Clean",
-    BorderSize = 1,
-    BorderShown = true,
-    BorderColor = {
-        r = 0,
-        g = 0,
-        b = 0,
-        a = 1
+    [Constants.CdmFramesEnum.ESSENTIAL_COOLDOWN_VIEWER] = {
+        Style = "Clean",
+        BorderSize = 1,
+        BorderShown = true,
+        BorderColor = {
+            r = 0,
+            g = 0,
+            b = 0,
+            a = 1
+        },
+        StacksAnchor = "TOP",
+        StacksXOffset = 0,
+        StacksYOffset = 0,
+        StacksAnchor = "TOP",
+        StacksFontSize = 18,
+        CooldownFontSize = 20,
+        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        IconXPadding = 1,
+        IconYPadding = 1
     },
-    StacksAnchor = "TOP",
-    StacksXOffset = 0,
-    StacksYOffset = 0,
-    StacksAnchor = "TOP",
-    StacksFontSize = 18,
-    CooldownFontSize = 20,
-    Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
-    IconXPadding = 1,
-    IconYPadding = 1
-}
-
-
-Constants.CdmFramesEnum = {
-    ESSENTIAL_COOLDOWN_VIEWER = "EssentialCooldownViewer",
-    BUFF_ICON_COOLDOWN_VIEWER = "BuffIconCooldownViewer",
-    UTILITY_COOLDOWN_VIEWER = "UtilityCooldownViewer"
+    [Constants.CdmFramesEnum.UTILITY_COOLDOWN_VIEWER] = {
+        Style = "Clean",
+        BorderSize = 1,
+        BorderShown = true,
+        BorderColor = {
+            r = 0,
+            g = 0,
+            b = 0,
+            a = 1
+        },
+        StacksAnchor = "TOP",
+        StacksXOffset = 0,
+        StacksYOffset = 0,
+        StacksAnchor = "TOP",
+        StacksFontSize = 18,
+        CooldownFontSize = 20,
+        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        IconXPadding = 1,
+        IconYPadding = 1
+    },
+    [Constants.CdmFramesEnum.BUFF_ICON_COOLDOWN_VIEWER] = {
+        Style = "Clean",
+        BorderSize = 1,
+        BorderShown = true,
+        BorderColor = {
+            r = 0,
+            g = 0,
+            b = 0,
+            a = 1
+        },
+        StacksAnchor = "TOP",
+        StacksXOffset = 0,
+        StacksYOffset = 0,
+        StacksAnchor = "TOP",
+        StacksFontSize = 18,
+        CooldownFontSize = 20,
+        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        IconXPadding = 1,
+        IconYPadding = 1
+    },
 }
 
 Constants.Styles = {

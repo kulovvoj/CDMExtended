@@ -1,0 +1,82 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\FrameXML\UI_shared.xsd">
+    <Frame name="CDMXOptions" parent="UIParent" mixin="CdmxOptionsMixin" inherits="BackdropTemplate" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true">
+        <Size x="700" y="450" />
+        <Anchors>
+            <Anchor point="CENTER" />
+        </Anchors>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="Title" inherits="GameFontHighlightLarge">
+                    <Anchors>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-15"/>
+                    </Anchors>
+                    <Scripts>
+                        <OnLoad>
+                            self:GetParent().Title = self
+                        </OnLoad>
+                    </Scripts>
+                </FontString>
+            </Layer>
+            <Layer>
+                <Texture parentKey="Divider" file="Interface\FriendsFrame\UI-FriendsFrame-OnlineDivider">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="167" y="-40" />
+                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMLEFT" x="183" y="0" />
+                    </Anchors>
+                    <Scripts>
+                        <OnLoad>
+                            self:SetTexCoord(0, 0, 1, 0, 0, 1, 1, 1)
+                        </OnLoad>
+                    </Scripts>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame parentKey="Border" inherits="DialogBorderTranslucentTemplate">
+            </Frame>
+            <Button parentKey="Button" inherits="UIPanelCloseButton" frameStrata="DIALOG">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT"  />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Hide()
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Frame parentKey="Categories" mixin="CdmxCategoriesFrameMixin" inherits="VerticalLayoutFrame">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="-40" />
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="150" y="0" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad method="OnLoad" />
+                </Scripts>
+                <KeyValues>
+                    <KeyValue key="expand" value="true" type="boolean"/>
+                    <KeyValue key="respectChildScale" value="true" type="boolean"/>
+                    <KeyValue key="spacing" value="2" type="number"/>
+                </KeyValues>
+            </Frame>
+            <Frame parentKey="Settings" mixin="CdmxSettingsFrameMixin" inherits="VerticalLayoutFrame">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="200" y="-40" />
+                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-25" y="25" />
+                </Anchors>
+                <Scripts>
+                    <OnLoad method="OnLoad" />
+                </Scripts>
+                <KeyValues>
+                    <KeyValue key="expand" value="true" type="boolean"/>
+                    <KeyValue key="respectChildScale" value="true" type="boolean"/>
+                    <KeyValue key="spacing" value="2" type="number"/>
+                </KeyValues>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+        </Scripts>
+    </Frame>
+</Ui>

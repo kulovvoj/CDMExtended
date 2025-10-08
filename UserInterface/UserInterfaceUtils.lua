@@ -5,7 +5,7 @@ local UserInterfaceMixins = private:GetPrototype("UserInterfaceMixins")
 
 function UserInterfaceUtils:CreateWindow(width, height)
     local frame = CreateFrame("Frame", "CDMXOptions", UIParent, "BackdropTemplate")
-    Mixin(frame, UserInterfaceMixins.OptionsMixin)
+    Mixin(frame, CdmxOptionsMixin)
 
     frame:OnLoad()
     frame:SetSize(width, height)

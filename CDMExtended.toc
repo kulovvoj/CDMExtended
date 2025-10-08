@@ -17,6 +17,8 @@ Constants\Constants.lua
 UserInterface\UserInterfaceUtils.lua
 UserInterface\UserInterfaceMixins.lua
 UserInterface\OptionsHandler.lua
+UserInterface\CDMXOptions.xml
+UserInterface\CategoryButtonTemplate.xml
 
 # Core modules
 CDMX_Core.lua

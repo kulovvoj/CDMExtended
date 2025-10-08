@@ -1,0 +1,29 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\Blizzard_SharedXML\UI.xsd">
+    <Button name="CdmxCategoryButtonTemplate" mixin="CdmxCategoryButtonMixin" virtual="true">
+        <Size x="175" y="20"/>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="Texture">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="10"/>
+                        <Anchor point="BOTTOMRIGHT" x="-10"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Label" inherits="GameFontNormal" justifyH="LEFT">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="36" y="1"/>
+                        <Anchor point="BOTTOMRIGHT" y="1"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnEnter method="OnEnter"/>
+            <OnLeave method="OnLeave"/>
+            <OnClick method="OnClick"/>
+        </Scripts>
+    </Button>
+</Ui>
