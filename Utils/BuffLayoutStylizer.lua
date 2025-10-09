@@ -2,6 +2,7 @@ local private = select(2, ...)
 local BuffLayoutStylizer = private:GetPrototype("BuffLayoutStylizer")
 
 local Constants = private:GetPrototype("Constants")
+local Utils = private:GetPrototype("Utils")
 
 local GrowingLayout = {}
 
@@ -119,24 +120,49 @@ function BuffLayoutStylizer.UpdateGrow(_, category)
     end
 end
 
-function BuffLayoutStylizer:HookItemFrames()
-    local BuffIconCooldownViewer = _G["BuffIconCooldownViewer"]
-    for itemFrame in BuffIconCooldownViewer.itemFramePool:EnumerateActive() do
-        local isInPool = false
-        for _, f in ipairs(BuffLayoutStylizer.framePool) do
-            isInPool = f == itemFrame
+function BuffLayoutStylizer.AnimateOnShow(frame, duration, startScale)
+    frame.CooldownFlash = CreateFrame("Frame", nil, frame, "BuffCooldownFlashTemplate")
+
+    frame.CooldownFlash:Show();
+
+    local isHidden = true
+    local lockout = true
+
+    frame:HookScript("OnShow", function()
+        lockout = true
+        if (isHidden) then
+            isHidden = false
+            frame.CooldownFlash.FlashAnim:Stop();
+            frame.CooldownFlash.FlashAnim:Play();
         end
-        if not isInPool then
-            table.insert(BuffLayoutStylizer.framePool, itemFrame)
-            hooksecurefunc(itemFrame, "SetShown", function(self, event)
-                BuffIconCooldownViewer:MarkDirty()
-            end)
-        end
-    end
+    end)
+    frame:HookScript("OnHide", function()
+        lockout = false
+        C_Timer.After(0.1, function()
+            if not lockout then
+                isHidden = true
+            end
+        end)
+    end)
 end
 
 BuffLayoutStylizer.framePool = {}
 
-hooksecurefunc(BuffIconCooldownViewer, "RefreshLayout", function (self)
+function BuffLayoutStylizer:HookItemFrames()
+    local BuffIconCooldownViewer = _G["BuffIconCooldownViewer"]
+    for _, itemFrame in pairs(BuffIconCooldownViewer:GetItemFrames()) do
+        local isInPool = Utils.TableIncludesValue(BuffLayoutStylizer.framePool, itemFrame:GetDebugName())
+        if not isInPool then
+            table.insert(BuffLayoutStylizer.framePool, itemFrame:GetDebugName())
+            hooksecurefunc(itemFrame, "SetShown", function(self, event)
+                BuffIconCooldownViewer:MarkDirty()
+            end)
+
+            BuffLayoutStylizer.AnimateOnShow(itemFrame, 1, 0.5)
+        end
+    end
+end
+
+hooksecurefunc(BuffIconCooldownViewer, "RefreshLayout", function ()
     BuffLayoutStylizer:HookItemFrames()
 end)

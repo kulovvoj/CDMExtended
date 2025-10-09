@@ -1,0 +1,21 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\Blizzard_SharedXML\UI.xsd">
+    <Frame name="BuffCooldownFlashTemplate" hidden="true" virtual="true">
+        <Anchors>
+            <Anchor point="TOPLEFT" x="0" y="1"/>
+            <Anchor point="BOTTOMRIGHT" x="0" y="1"/>
+        </Anchors>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture parentKey="Flipbook" atlas="UI-HUD-ActionBar-GCD-Flipbook" alpha="0"/>
+            </Layer>
+        </Layers>
+        <Animations>
+            <AnimationGroup parentKey="FlashAnim">
+                <Alpha parentKey="HideAnim" childKey="Flipbook" duration="0" order="1" fromAlpha="0" toAlpha="0"/>
+                <Alpha parentKey="ShowAnim" childKey="Flipbook" duration="0" order="1" fromAlpha="1" toAlpha="1"/>
+                <FlipBook parentKey="PlayAnim" childKey="Flipbook" duration="0.75" order="1" flipBookRows="11" flipBookColumns="2" flipBookFrames="22" flipBookFrameWidth="0" flipBookFrameHeight="0"/>
+            </AnimationGroup>
+        </Animations>
+    </Frame>
+</Ui>

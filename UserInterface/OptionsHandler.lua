@@ -16,7 +16,7 @@ end)
 function OptionsHandler:GetCurrentSettingIds()
     local settingIds = {}
     for _, setting in ipairs(Constants.Settings) do
-        if Utils:TableIncludesValue(setting.categories, OptionsHandler.OptionWindow.Categories:GetCurrentCategory()) then
+        if Utils.TableIncludesValue(setting.categories, OptionsHandler.OptionWindow.Categories:GetCurrentCategory()) then
             table.insert(settingIds, setting.id)
         end
     end

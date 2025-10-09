@@ -4,6 +4,7 @@
 ## OptionalDeps: LibSharedMedia-3.0
 
 # Pre-core modules
+Utils\CooldownFlashTemplate.xml
 Utils\PrototypeRegistry.lua
 Utils\SafetyUtils.lua
 Utils\IconStylizer.lua
