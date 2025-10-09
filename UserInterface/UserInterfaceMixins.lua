@@ -15,10 +15,6 @@ function CdmxOptionsMixin:SetTitle(title)
     self.Title:SetText(title)
 end
 
-function CdmxOptionsMixin:GetSettingsFrame()
-    return self.Settings
-end
-
 -- Categories frame
 
 CdmxCategoriesFrameMixin = {}
@@ -117,7 +113,17 @@ function CdmxSettingsFrameMixin:OnSettingsChanged(id, value, frame)
     EventRegistry:TriggerEvent("CDMX_SettingChanged", id, value, frame)
 end
 
-function CdmxSettingsFrameMixin:RefreshChildren()
+function CdmxSettingsFrameMixin:HasSetting(id)
+    for i = 1, select("#", self:GetChildren()) do
+        local child = select(i, self:GetChildren())
+        if type(child) == "table" and child.id and child.id == id then
+            return true
+        end
+    end
+    return false
+end
+
+function CdmxSettingsFrameMixin:UpdateChildrenData()
     for i = 1, select("#", self:GetChildren()) do
         local child = select(i, self:GetChildren())
         if type(child) == "table" and child.id and child.Setting then
@@ -126,6 +132,42 @@ function CdmxSettingsFrameMixin:RefreshChildren()
                 child.Setting:SetValue(value)
             elseif child.Setting.SignalUpdate then
                 child.Setting:SignalUpdate()
+            end
+        end
+    end
+end
+
+function CdmxSettingsFrameMixin:UpdateChildrenVisibility(settingIds)
+    for i = 1, select("#", self:GetChildren()) do
+        local child = select(i, self:GetChildren())
+        local shouldBeVisible = false
+        for _, settingId in ipairs(settingIds) do
+            if type(child) == "table" and child.id == settingId then
+                shouldBeVisible = true
+            end
+        end
+        if shouldBeVisible then
+            child:Show()
+        else
+            child:Hide()
+        end
+    end
+end
+
+function CdmxSettingsFrameMixin:UpdateChildren()
+    for i = 1, select("#", self:GetChildren()) do
+        local child = select(i, self:GetChildren())
+        if type(child) == "table" and child.id and child.Setting then
+            if (self:GetSettingValue(child.id) == nil) then
+                child:Hide()
+            else
+                child:Show()
+                local value = self:GetSettingValue(child.id)
+                if child.Setting.SetValue then
+                    child.Setting:SetValue(value)
+                elseif child.Setting.SignalUpdate then
+                    child.Setting:SignalUpdate()
+                end
             end
         end
     end

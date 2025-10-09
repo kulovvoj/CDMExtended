@@ -5,6 +5,7 @@ local IconStylizer = private:GetPrototype("IconStylizer")
 local CooldownStylizer = private:GetPrototype("CooldownStylizer")
 local StacksStylizer = private:GetPrototype("StacksStylizer")
 local SafetyUtils = private:GetPrototype("SafetyUtils")
+local BuffLayoutStylizer = private:GetPrototype("BuffLayoutStylizer")
 
 local SharedMedia = SafetyUtils:GetSharedMedia()
 
@@ -18,6 +19,13 @@ function Constants:Initialize()
     end
 
     Constants.Settings = {
+        {
+            id = "GrowBuffs",
+            label = "Grow Buffs",
+            type = Constants.SettingTypesEnum.CHECKBOX,
+            categories = { Constants.CdmFramesEnum.BUFF },
+            stylizers = { BuffLayoutStylizer.UpdateGrow }
+        },
         {
             id = "StacksAnchor",
             label = "Stacks Anchor",
@@ -33,6 +41,7 @@ function Constants:Initialize()
                 { text = "Left", value = "LEFT" },
                 { text = "Center", value = "CENTER" }
             },
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
             stylizers = { StacksStylizer.UpdatePosition }
         },
         {
@@ -40,7 +49,8 @@ function Constants:Initialize()
             label = "Font",
             type = Constants.SettingTypesEnum.DROPDOWN,
             options = fontsList,
-            stylizers = { StacksStylizer.UpdateFont, CooldownStylizer.UpdateFont }
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { StacksStylizer.UpdateFont, CooldownStylizer.UpdateFont }
         },
         {
             id = "StacksXOffset",
@@ -50,7 +60,8 @@ function Constants:Initialize()
             maxValue = 30,
             steps = 60,
             isPercent = false,
-            stylizers = { StacksStylizer.UpdatePosition }
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { StacksStylizer.UpdatePosition }
         },
         {
             id = "StacksYOffset",
@@ -60,7 +71,8 @@ function Constants:Initialize()
             maxValue = 30,
             steps = 60,
             isPercent = false,
-            stylizers = { StacksStylizer.UpdatePosition }
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { StacksStylizer.UpdatePosition }
         },
         {
             id = "StacksFontSize",
@@ -70,7 +82,8 @@ function Constants:Initialize()
             maxValue = 30,
             steps = 20,
             isPercent = false,
-            stylizers = { StacksStylizer.UpdateFont }
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { StacksStylizer.UpdateFont }
         },
         {
             id = "CooldownFontSize",
@@ -80,7 +93,8 @@ function Constants:Initialize()
             maxValue = 30,
             steps = 20,
             isPercent = false,
-            stylizers = { CooldownStylizer.UpdateFont }
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { CooldownStylizer.UpdateFont }
         },
         {
             id = "IconXPadding",
@@ -89,7 +103,8 @@ function Constants:Initialize()
             minValue = 0,
             maxValue = 15,
             steps = 15,
-            isPercent = false
+            isPercent = false,
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF }
         },
         {
             id = "IconYPadding",
@@ -98,7 +113,8 @@ function Constants:Initialize()
             minValue = 0,
             maxValue = 15,
             steps = 15,
-            isPercent = false
+            isPercent = false,
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF }
         },
         {
             id = "BorderSize",
@@ -108,27 +124,42 @@ function Constants:Initialize()
             maxValue = 15,
             steps = 14,
             isPercent = false,
-            stylizers = { IconStylizer.RemoveBorder, IconStylizer.AddBorder }
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { IconStylizer.RemoveBorder, IconStylizer.AddBorder }
         },
         {
             id = "BorderColor",
             label = "Border Color",
             type = Constants.SettingTypesEnum.COLOR_PICKER,
-            stylizers = { IconStylizer.RemoveBorder, IconStylizer.AddBorder }
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { IconStylizer.RemoveBorder, IconStylizer.AddBorder }
         },
         {
             id = "BorderShown",
             label = "Show Border",
             type = Constants.SettingTypesEnum.CHECKBOX,
-            stylizers = { IconStylizer.RemoveBorder, IconStylizer.AddBorder }
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { IconStylizer.RemoveBorder, IconStylizer.AddBorder }
         }
     }
 end
 
+function Constants:GetCategorySettings(category)
+    local filteredSettings = {}
+    for _, setting in ipairs(Constants.Settings) do
+        for _, settingCategory in ipairs(setting.categories) do
+            if settingCategory == category then
+                table.insert(filteredSettings, setting)
+            end
+        end
+    end
+    return filteredSettings
+end
+
 Constants.CdmFramesEnum = {
-    ESSENTIAL_COOLDOWN_VIEWER = "EssentialCooldownViewer",
-    BUFF_ICON_COOLDOWN_VIEWER = "BuffIconCooldownViewer",
-    UTILITY_COOLDOWN_VIEWER = "UtilityCooldownViewer"
+    ESSENTIAL = "EssentialCooldownViewer",
+    BUFF = "BuffIconCooldownViewer",
+    UTILITY = "UtilityCooldownViewer"
 }
 
 Constants.SettingTypesEnum = {
@@ -139,7 +170,7 @@ Constants.SettingTypesEnum = {
 }
 
 Constants.DefaultOptions = {
-    [Constants.CdmFramesEnum.ESSENTIAL_COOLDOWN_VIEWER] = {
+    [Constants.CdmFramesEnum.ESSENTIAL] = {
         Style = "Clean",
         BorderSize = 1,
         BorderShown = true,
@@ -159,7 +190,7 @@ Constants.DefaultOptions = {
         IconXPadding = 1,
         IconYPadding = 1
     },
-    [Constants.CdmFramesEnum.UTILITY_COOLDOWN_VIEWER] = {
+    [Constants.CdmFramesEnum.UTILITY] = {
         Style = "Clean",
         BorderSize = 1,
         BorderShown = true,
@@ -179,8 +210,9 @@ Constants.DefaultOptions = {
         IconXPadding = 1,
         IconYPadding = 1
     },
-    [Constants.CdmFramesEnum.BUFF_ICON_COOLDOWN_VIEWER] = {
+    [Constants.CdmFramesEnum.BUFF] = {
         Style = "Clean",
+        GrowBuffs = true,
         BorderSize = 1,
         BorderShown = true,
         BorderColor = {
