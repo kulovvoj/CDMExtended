@@ -47,7 +47,7 @@ function IconStylizer.AddBorder(frame, frameName)
     border:EnableMouse(false)
     border:SetBackdrop({
         edgeFile = Constants.Styles[CdmxDB[frameName].Style].MaskTexture, -- or your own border texture
-        edgeSize = CdmxDB[frameName].BorderSize,
+        edgeSize = CdmxDB[frameName].BorderSize + 1,
     })
     border:SetBackdropBorderColor(CdmxDB[frameName].BorderColor.r, CdmxDB[frameName].BorderColor.g, CdmxDB[frameName].BorderColor.b, CdmxDB[frameName].BorderColor.a)
 
@@ -85,9 +85,20 @@ function IconStylizer.ScaleIconTexture(frame, frameName)
 
     local width = SafetyUtils:SafeCall(frame, "GetWidth") or 0
     local height = SafetyUtils:SafeCall(frame, "GetHeight") or 0
-    local xOffset, yOffset = Constants.Styles[CdmxDB[frameName].Style].IconScale * width, Constants.Styles[CdmxDB[frameName].Style].IconScale * height
+    local xOffset, yOffset = Constants.Styles[CdmxDB[frameName].Style].IconScale * width, Constants.Styles[CdmxDB[frameName].Style].IconScale * width
 
     icon:ClearAllPoints()
-    icon:SetPoint("TOPLEFT",     frame, "TOPLEFT",     -xOffset,  yOffset)
-    icon:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT",  xOffset, -yOffset)
+    icon:SetPoint("TOPLEFT",     frame, "TOPLEFT",     -xOffset,  yOffset + (width - height) / 2)
+    icon:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT",  xOffset, -yOffset - (width - height) / 2)
+end
+
+function IconStylizer.UpdateHeight(frame, frameName)
+    if type(frame) ~= "table" or SafetyUtils:IsForbidden(frame) then return end
+    local icon = frame.Icon
+    if type(icon) ~= "table" then return end
+
+    local width = SafetyUtils:SafeCall(frame, "GetWidth") or 0
+    local height = width * CdmxDB[frameName].IconHeight
+    frame:SetSize(width, height)
+    IconStylizer.ScaleIconTexture(frame, frameName)
 end

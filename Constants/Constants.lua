@@ -97,6 +97,17 @@ function Constants:Initialize()
             stylizers  = { CooldownStylizer.UpdateFont }
         },
         {
+            id = "IconHeight",
+            label = "Icon Height",
+            type = Constants.SettingTypesEnum.SLIDER,
+            minValue = 0.5,
+            maxValue = 1,
+            steps = 50,
+            isPercent = true,
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { IconStylizer.UpdateHeight }
+        },
+        {
             id = "IconXPadding",
             label = "Icon Padding X",
             type = Constants.SettingTypesEnum.SLIDER,
@@ -187,6 +198,7 @@ Constants.DefaultOptions = {
         StacksFontSize = 18,
         CooldownFontSize = 20,
         Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        IconHeight = 1,
         IconXPadding = 1,
         IconYPadding = 1
     },
@@ -207,6 +219,7 @@ Constants.DefaultOptions = {
         StacksFontSize = 18,
         CooldownFontSize = 20,
         Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        IconHeight = 1,
         IconXPadding = 1,
         IconYPadding = 1
     },
@@ -228,6 +241,7 @@ Constants.DefaultOptions = {
         StacksFontSize = 18,
         CooldownFontSize = 20,
         Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        IconHeight = 1,
         IconXPadding = 1,
         IconYPadding = 1
     },

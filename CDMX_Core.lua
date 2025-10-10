@@ -71,6 +71,7 @@ local function HookViewerRefresh()
         CooldownStylizer.UpdateCooldownFlash,
         IconStylizer.RemoveBorder,
         IconStylizer.AddBorder,
+        IconStylizer.UpdateHeight,
         StacksStylizer.UpdatePosition,
         StacksStylizer.UpdateFont,
         CooldownStylizer.UpdateFont
@@ -104,6 +105,7 @@ local function OnPlayerLogin()
         CooldownStylizer.UpdateCooldownFlash,
         IconStylizer.RemoveBorder,
         IconStylizer.AddBorder,
+        IconStylizer.UpdateHeight,
         StacksStylizer.UpdatePosition,
         StacksStylizer.UpdateFont,
         CooldownStylizer.UpdateFont
