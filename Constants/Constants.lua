@@ -27,6 +27,14 @@ function Constants:Initialize()
             stylizers = { BuffLayoutStylizer.UpdateGrow }
         },
         {
+            id = "Font",
+            label = "Font",
+            type = Constants.SettingTypesEnum.DROPDOWN,
+            options = fontsList,
+            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
+            stylizers  = { StacksStylizer.UpdateFont, CooldownStylizer.UpdateFont }
+        },
+        {
             id = "StacksAnchor",
             label = "Stacks Anchor",
             type = Constants.SettingTypesEnum.DROPDOWN,
@@ -43,14 +51,6 @@ function Constants:Initialize()
             },
             categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
             stylizers = { StacksStylizer.UpdatePosition }
-        },
-        {
-            id = "Font",
-            label = "Font",
-            type = Constants.SettingTypesEnum.DROPDOWN,
-            options = fontsList,
-            categories = { Constants.CdmFramesEnum.ESSENTIAL, Constants.CdmFramesEnum.UTILITY, Constants.CdmFramesEnum.BUFF },
-            stylizers  = { StacksStylizer.UpdateFont, CooldownStylizer.UpdateFont }
         },
         {
             id = "StacksXOffset",
@@ -183,67 +183,64 @@ Constants.SettingTypesEnum = {
 Constants.DefaultOptions = {
     [Constants.CdmFramesEnum.ESSENTIAL] = {
         Style = "Clean",
+        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        StacksAnchor = "TOP",
+        StacksXOffset = 0,
+        StacksYOffset = 0,
+        StacksFontSize = 18,
+        CooldownFontSize = 22,
+        IconHeight = 1,
+        IconXPadding = 3,
+        IconYPadding = 3,
         BorderSize = 1,
-        BorderShown = true,
         BorderColor = {
             r = 0,
             g = 0,
             b = 0,
             a = 1
         },
-        StacksAnchor = "TOP",
-        StacksXOffset = 0,
-        StacksYOffset = 0,
-        StacksAnchor = "TOP",
-        StacksFontSize = 18,
-        CooldownFontSize = 20,
-        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
-        IconHeight = 1,
-        IconXPadding = 1,
-        IconYPadding = 1
+        BorderShown = true
     },
     [Constants.CdmFramesEnum.UTILITY] = {
         Style = "Clean",
+        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        StacksAnchor = "TOP",
+        StacksXOffset = 0,
+        StacksYOffset = 0,
+        StacksFontSize = 16,
+        CooldownFontSize = 14,
+        IconHeight = 1,
+        IconXPadding = 3,
+        IconYPadding = 3,
         BorderSize = 1,
-        BorderShown = true,
         BorderColor = {
             r = 0,
             g = 0,
             b = 0,
             a = 1
         },
-        StacksAnchor = "TOP",
-        StacksXOffset = 0,
-        StacksYOffset = 0,
-        StacksAnchor = "TOP",
-        StacksFontSize = 18,
-        CooldownFontSize = 20,
-        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
-        IconHeight = 1,
-        IconXPadding = 1,
-        IconYPadding = 1
+        BorderShown = true
     },
     [Constants.CdmFramesEnum.BUFF] = {
         Style = "Clean",
         GrowBuffs = true,
+        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
+        StacksAnchor = "TOP",
+        StacksXOffset = 0,
+        StacksYOffset = 0,
+        StacksFontSize = 18,
+        CooldownFontSize = 22,
+        IconHeight = 1,
+        IconXPadding = 3,
+        IconYPadding = 3,
         BorderSize = 1,
-        BorderShown = true,
         BorderColor = {
             r = 0,
             g = 0,
             b = 0,
             a = 1
         },
-        StacksAnchor = "TOP",
-        StacksXOffset = 0,
-        StacksYOffset = 0,
-        StacksAnchor = "TOP",
-        StacksFontSize = 18,
-        CooldownFontSize = 20,
-        Font = SharedMedia:Fetch("font", "Friz Quadrata TT"),
-        IconHeight = 1,
-        IconXPadding = 1,
-        IconYPadding = 1
+        BorderShown = true
     },
 }
 

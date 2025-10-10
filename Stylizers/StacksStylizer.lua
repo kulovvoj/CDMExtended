@@ -22,6 +22,9 @@ function StacksStylizer.UpdatePosition(frame, frameName)
     local current = stacks.Applications or stacks.Current
     if type(current) ~= "table" then return end
 
+    local parentLevel = frame:GetFrameLevel() or 1
+    stacks:SetFrameLevel(math.max(0, parentLevel + 3))
+
     current:ClearAllPoints()
     current:SetPoint("CENTER", frame, CdmxDB[frameName].StacksAnchor, CdmxDB[frameName].StacksXOffset, CdmxDB[frameName].StacksYOffset)
 end

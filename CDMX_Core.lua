@@ -74,7 +74,8 @@ local function HookViewerRefresh()
         IconStylizer.UpdateHeight,
         StacksStylizer.UpdatePosition,
         StacksStylizer.UpdateFont,
-        CooldownStylizer.UpdateFont
+        CooldownStylizer.UpdateFont,
+        CooldownStylizer.UpdateSpellAlert
     }
 
     for _, frameName in pairs(Constants.CdmFramesEnum) do
@@ -108,7 +109,8 @@ local function OnPlayerLogin()
         IconStylizer.UpdateHeight,
         StacksStylizer.UpdatePosition,
         StacksStylizer.UpdateFont,
-        CooldownStylizer.UpdateFont
+        CooldownStylizer.UpdateFont,
+        CooldownStylizer.UpdateSpellAlert
     }
 
     for _, frameName in pairs(Constants.CdmFramesEnum) do

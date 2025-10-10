@@ -4,17 +4,19 @@
 ## OptionalDeps: LibSharedMedia-3.0
 
 # Pre-core modules
-Utils\CooldownFlashTemplate.xml
 Utils\PrototypeRegistry.lua
 Utils\SafetyUtils.lua
-Utils\IconStylizer.lua
-Utils\CooldownStylizer.lua
-Utils\StacksStylizer.lua
 Utils\CommandHandler.lua
 Utils\FontInitializer.lua
-Utils\BuffLayoutStylizer.lua
 Utils\Utils.lua
 Constants\Constants.lua
+
+# Stylizers
+Stylizers\CooldownFlashTemplate.xml
+Stylizers\IconStylizer.lua
+Stylizers\CooldownStylizer.lua
+Stylizers\StacksStylizer.lua
+Stylizers\BuffLayoutStylizer.lua
 
 # User interface modules
 UserInterface\UserInterfaceUtils.lua
